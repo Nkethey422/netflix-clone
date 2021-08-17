@@ -1,9 +1,11 @@
 import "./App.css";
+import React from "react";
 import "./axios.js";
 import Row from "./components/Row";
 import requests from "./requests.js";
 import Banner from "./components/Banner.js";
 import Nav from "./components/Nav.js";
+require("dotenv").config();
 
 function App() {
   return (
