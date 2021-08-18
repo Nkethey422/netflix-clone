@@ -15,7 +15,6 @@ function App() {
       <Row
         title="Netflix Originals"
         fetchUrl={requests.fetchNetflixOriginals}
-        // isLargeRow defaults to true...continued in Row.js through props.
       />
       <Row title="Trending Now" fetchUrl={requests.fetchTrending} />
       <Row title="Top Rated" fetchUrl={requests.fetchTopRated} />
