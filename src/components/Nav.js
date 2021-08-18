@@ -4,15 +4,12 @@ import "./Nav.css";
 
 function Nav() {
   const [show, handleShow] = useState(false);
-  // monitors scrolling to turn Nav background a solid color.
   useEffect(() => {
     window.addEventListener("scroll", () => {
       if (window.scrollY > 100) {
-        // after you scroll 100px down we are changing our state (handleShow) to true, otherwise false.
         handleShow(true);
       } else handleShow(false);
     });
-    // Before second, third....instances of useEffect, remove the previous event listener to prevent excess events.
     return () => {
       window.removeEventListener("scroll");
     };

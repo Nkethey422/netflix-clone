@@ -16,7 +16,6 @@
 
 .row__poster {
   width: 100;
-  /* contain ensures that images maintain their aspect ratios */
   object-fit: contain;
   max-height: 100px;
   margin-right: 10px;
