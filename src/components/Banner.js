@@ -1,6 +1,5 @@
 import React from "react";
 import { useEffect, useState } from "react/cjs/react.development";
-import axios from "../axios";
 import requests from "../requests.js";
 import "./Banner.css";
 
@@ -12,11 +11,12 @@ function Banner() {
     // use asynchronous functions anytime you make a call to an external API. async function used anytime it takes a moment to communicate.
     async function fetchData() {
       // **** Not typically used within a useEffect, needs an internal function in order to work properly
-      const request = await axios.get(requests.fetchNetflixOriginals);
+      const request = await fetch(requests.fetchNetflixOriginals);
       //  setMovie to a random movie pulled from our JSON Object.
+      const body = await request.json();
       setMovie(
-        request.data.results[
-          Math.floor(Math.random() * request.data.results.length - 1)
+        body.data.results[
+          Math.floor(Math.random() * body.data.results.length - 1)
         ]
       );
       // must return request before calling fetchData() function.
@@ -25,8 +25,6 @@ function Banner() {
     // must call function within useEffect to work.
     fetchData();
   }, []);
-
-  console.log(movie);
 
   // For banner__description, takes arguments string and number and truncates with an elipses.
   function truncate(str, n) {

@@ -1,30 +1,40 @@
 import React, { useState, useEffect } from "react";
-import axios from "../axios";
+
 import "./Row.css";
 import YouTube from "react-youtube";
 
-// *** isLargeRow ***
-// destructure for isLargeRow.
 function Row({ title, fetchUrl, isLargeRow }) {
   const [movies, setMovies] = useState([]);
+  // used to get images
   const baseUrl = "https://image.tmdb.org/t/p/original/";
   const [trailerUrl, setTrailerUrl] = useState("");
 
   useEffect(() => {
-    // use asynchronous functions anytime you make a call to an external API. async function used anytime it takes a moment to communicate.
-
-    // **** Not typically used within a useEffect, needs an internal function in order to work properly
-
     async function fetchData() {
-      // await ensures proper communication with API.
-      const request = await axios.get(fetchUrl);
-      setMovies(request.data.results);
-      // must return request before calling function.
+      const request = await fetch(fetchUrl);
+      const body = await request.json();
+      setMovies(body.data.results);
       return request;
     }
-    // function must be called in order to be used within the useEffect.
     fetchData();
   }, [fetchUrl]);
+
+  // useEffect(() => {
+  //   // use asynchronous functions anytime you make a call to an external API. async function used anytime it takes a moment to communicate.
+
+  //   // **** Not typically used within a useEffect, needs an internal function in order to work properly
+
+  //   async function fetchData() {
+  //     // await ensures proper communication with API.
+  //     const request = await axios.get(fetchUrl);
+  //     setMovies(request.data.results);
+  //     // must return request before calling function.
+  //     console.log(request.data.results);
+  //     return request;
+  //   }
+  //   // function must be called in order to be used within the useEffect.
+  //   fetchData();
+  // }, [fetchUrl]);
 
   const opts = {
     height: "390",
@@ -38,12 +48,12 @@ function Row({ title, fetchUrl, isLargeRow }) {
     if (trailerUrl) {
       setTrailerUrl("");
     } else {
-      let trailerurl = await axios.get(
-        `/movie/${movie.id}/videos?api_key=4ec4b0d1e8dc8fc71ee4f5122df3e6c8`
-      );
-      setTrailerUrl(trailerurl.data.results[0]?.key);
+      let request = await fetch(`/movie/${movie.id}/videos?`);
+      const body = await request.json();
+      setTrailerUrl(body.data[0]?.key);
     }
   };
+  console.log(movies);
 
   return (
     <div className="row">
