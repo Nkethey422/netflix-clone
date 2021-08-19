@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import movieTrailer from "movie-trailer";
 
 import "./Row.css";
 import YouTube from "react-youtube";
@@ -12,11 +13,14 @@ function Row({ title, fetchUrl, isLargeRow }) {
     async function fetchData() {
       const request = await fetch(fetchUrl);
       const body = await request.json();
+      console.log(body.data.results);
       setMovies(body.data.results);
       return request;
     }
     fetchData();
   }, [fetchUrl]);
+
+  console.log(movies);
 
   const opts = {
     height: "390",
@@ -26,16 +30,18 @@ function Row({ title, fetchUrl, isLargeRow }) {
     },
   };
 
-  const handleClick = async (movie) => {
+  const handleClick = (movie) => {
     if (trailerUrl) {
       setTrailerUrl("");
     } else {
-      let request = await fetch(`/movie/${movie.id}/videos?`);
-      const body = await request.json();
-      setTrailerUrl(body.data[0]?.key);
+      movieTrailer(movie?.title || movie?.name || movie?.original_name || " ")
+        .then((url) => {
+          const urlParams = new URLSearchParams(new URL(url).search);
+          setTrailerUrl(urlParams.get("v"));
+        })
+        .catch((error) => console.log(error));
     }
   };
-  console.log(movies);
 
   return (
     <div className="row">
